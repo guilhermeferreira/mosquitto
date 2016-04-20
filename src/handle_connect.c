@@ -241,6 +241,10 @@ int handle__connect(struct mosquitto_db *db, struct mosquitto *context)
 				}
 			}
 		}
+	}else if(slen > MOSQ_MQTT_ID_MAX_LENGTH){
+		send__connack(context, 0, CONNACK_REFUSED_IDENTIFIER_REJECTED);
+		rc = MOSQ_ERR_PROTOCOL;
+		goto handle_connect_error;
 	}
 
 	/* clientid_prefixes check */
